@@ -18,7 +18,7 @@ def remove_metadata_qpdf(input_file, output_file):
     Removes metadata using QPDF.
     """
     try:
-        command = f'qpdf --linearize --object-streams=disable --replace-input {input_file} {output_file}'
+        command = f'qpdf --linearize --object-streams=disable {input_file} {output_file}'
         subprocess.run(command, shell=True, check=True)
         print(f"Metadata successfully removed using QPDF. Output: {output_file}")
     except subprocess.CalledProcessError as e:
