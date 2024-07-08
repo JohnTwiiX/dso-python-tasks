@@ -2,15 +2,9 @@
 
 This Python script allows you to remove metadata from PDF documents using either ExifTool or QPDF. It's a command-line tool that can process a single PDF file and save the result with all metadata stripped out.
 
-## Features
-
-- **Remove Metadata with ExifTool**: Strips all metadata using ExifTool.
-- **Remove Metadata with QPDF**: Removes metadata using QPDF.
-- **Command-line Interface**: Easy to use through the command line with options for specifying the input file, output file, and the tool to use.
-
 ## Requirements
 
-Ensure you have the following installed on your system:
+Ensure you have the following tools installed on your system:
 
 - **ExifTool**: A command-line application for reading, writing, and editing metadata. You can install it using:
 
@@ -53,7 +47,7 @@ Replace `test.pdf` with the path to your input PDF file and `output.pdf` with th
 
 ## Functions Explained
 
-`remove_metadata_exiftool(input_file, output_file)`
+### `remove_metadata_exiftool(input_file, output_file)`
 
 This function removes metadata from a PDF file using ExifTool.
 
@@ -68,7 +62,7 @@ This function removes metadata from a PDF file using ExifTool.
   - Executes the command using `subprocess.run`.
   - Handles errors if the command fails.
 
-`remove_metadata_qpdf(input_file, output_file)`
+### `remove_metadata_qpdf(input_file, output_file)`
 
 This function removes metadata from a PDF file using QPDF.
 

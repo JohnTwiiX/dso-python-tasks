@@ -4,6 +4,10 @@ import argparse
 
 def remove_metadata_exiftool(input_file, output_file):
     """
+    Parameter
+    - input_file = PDF with metadata
+    - output_file = PDF without metadata
+    
     Removes metadata using ExifTool.
     """
     try:
@@ -15,6 +19,10 @@ def remove_metadata_exiftool(input_file, output_file):
 
 def remove_metadata_qpdf(input_file, output_file):
     """
+    Parameter
+    - input_file = PDF with metadata
+    - output_file = PDF without metadata
+    
     Removes metadata using QPDF.
     """
     try:
@@ -26,9 +34,15 @@ def remove_metadata_qpdf(input_file, output_file):
 
 def main():
     parser = argparse.ArgumentParser(description="Remove metadata from a PDF document.")
-    parser.add_argument('-i', '--input', required=True, help='Path to the input PDF file.')
-    parser.add_argument('-o', '--output', required=True, help='Path to the output PDF file.')
-    parser.add_argument('-t', '--tool', choices=['exiftool', 'qpdf'], default='exiftool',
+    parser.add_argument('-i', '--input', 
+                        required=True, 
+                        help='Path to the input PDF file.')
+    parser.add_argument('-o', '--output', 
+                        required=True, 
+                        help='Path to the output PDF file.')
+    parser.add_argument('-t', '--tool', 
+                        choices=['exiftool', 'qpdf'], 
+                        default='exiftool',
                         help='Tool to remove metadata: "exiftool" or "qpdf" (default: "exiftool").')
 
     args = parser.parse_args()
