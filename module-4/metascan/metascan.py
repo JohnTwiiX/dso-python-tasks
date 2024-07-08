@@ -6,9 +6,9 @@ from urllib.parse import urljoin, urlparse
 from PyPDF2 import PdfReader
 import argparse
 
-def extract_pdf_links(url):
+def extract_pdf_links_from_website(url):
     response = requests.get(url)
-    response.raise_for_status()
+    response.raise_for_status() #HTTP Error
     soup = BeautifulSoup(response.text, 'html.parser')
     pdf_links = [urljoin(url, link.get('href')) for link in soup.find_all('a', href=True) if link.get('href').endswith('.pdf')]
     return pdf_links
@@ -62,7 +62,7 @@ def main():
     url = args.url
     csv_path = args.name
     
-    pdf_links = extract_pdf_links(url)
+    pdf_links = extract_pdf_links_from_website(url)
     if not pdf_links:
         print('No PDF files found.')
         return

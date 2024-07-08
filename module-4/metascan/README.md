@@ -2,16 +2,11 @@
 
 This Python script downloads PDF files from a specified website and extracts metadata such as title, author, creation date, etc., saving them into a CSV file.
 
-## Features
-
-- **Web Scraping**: Extracts all PDF links from a given website using `BeautifulSoup` and `requests` modules.
-- **PDF Download**: Downloads each PDF file found to a local directory (`pdfs/`).
-- **Metadata Extraction**: Uses the `PyPDF2` library to extract metadata (title, author, creation date, etc.) from each downloaded PDF file.
-- **CSV Export**: Saves extracted metadata into a CSV file with semicolon (`;`) as a delimiter for better readability.
-- **Error Handling**: Provides basic error handling for network requests and PDF metadata extraction failures.
-- **Command Line Interface**: Supports command-line arguments for specifying the website URL (`-u`) and output CSV file name (`-n`).
-
 ## Function Descriptions
+
+Ensure the website allows scraping of PDF links and complies with legal and ethical guidelines.
+The script may encounter issues with PDF files that have restricted access or malformed metadata.
+Customize the script further based on specific PDF metadata extraction needs or website structures.
 
 ### `extract_pdf_links(url)`
 
@@ -54,7 +49,11 @@ This is the main function that orchestrates the entire process. It parses comman
 ## Usage
 
 1. **Setup Environment**:
-    - Ensure Python 3.x and necessary libraries (`requests`, `beautifulsoup4`, `PyPDF2`) are installed.
+    - Ensure Python 3.12.3 and necessary libraries (`requests 2.31`, `beautifulsoup4 4.12`, `PyPDF2 2.12`) are installed.
+
+    ```python
+    pip install requests==2.31 beautifulsoup4==4.12 PyPDF2==2.12
+    ```
 
 2. **Run the Script**:
 
@@ -82,13 +81,3 @@ python3 metascan.py -u https://example.com -n example_metadata.csv
 - `requests`: For making HTTP requests to fetch web pages.
 - `beautifulsoup4`: For parsing HTML and extracting data from web pages.
 - `PyPDF2`: For extracting metadata from PDF files.
-
-## Notes
-
-- Ensure the website allows scraping of PDF links and complies with legal and ethical guidelines.
-- The script may encounter issues with PDF files that have restricted access or malformed metadata.
-- Customize the script further based on specific PDF metadata extraction needs or website structures.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
