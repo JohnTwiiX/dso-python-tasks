@@ -5,12 +5,14 @@ Hydra can be used to TBD.
 
 This is a lightweight implementation that covers the following features/options:
 
-- `-u` `--username`, Username for SSH login
-- `-s` `--server`, True, help="Server IP or DNS for SSH login
-- `-w` `--wordlist`, Wordlist for dictionary attack
-- `--min`, Minimum length of passwords for brute force (default: 4)
-- `--max`, Maximum length of passwords for brute force (default: 8)
-- `-c` `--charset`, Charset for brute force attack (default: lowercase letters)
+| Tag               | description                                                 | required |
+| ----------------- | ----------------------------------------------------------- | -------- |
+| `-u` `--username` | Username for SSH login                                      | x        |
+| `-s` `--server`   | Server IP or DNS for SSH login                              | x        |
+| `-w` `--wordlist` | Wordlist for dictionary attack                              |          |
+| `--min`           | Minimum length of passwords for brute force (default: 4)    |          |
+| `--max`           | Maximum length of passwords for brute force (default: 8)    |          |
+| `-c` `--charset`  | Charset for brute force attack (default: lowercase letters) |          |
 
 ## Features
 
@@ -23,8 +25,9 @@ This is a lightweight implementation that covers the following features/options:
 
 ### Prerequisites
 
-- Python 3.6 or later
-- `paramiko` library
+- Python 3.12.3
+- `paramiko` 2.12
+- `argparse`
 
 To install `paramiko`, you can use `pip`:
 
@@ -34,27 +37,10 @@ pip install paramiko
 
 ### Installation
 
-1. Clone or download the script.
-2. ensure `paramiko` is installed in your Python environment.
-3. Verify you have permissions to test the SSH server with username provided.
+1. clone the repository.
+2. install dependencies.
 
 ## Usage examples
-
-### Brute Force Attack
-
-To perfom a brute force attack, specify the username and server, along with optional parameters for character set and password length:
-
-```bash
-python hydra.py -u <username> -s <server_ip_or_dns> --min 4 --max 8 -c abc123
-```
-
-### Dictionary Attack
-
-To perform a dictionary attack, provide the username, server, and a path to a wordlist file:
-
-```bash
-python hydra.py -u <username> -s <server_ip_or_dns> -w <path_to_wordlist>
-```
 
 ### Help
 
@@ -64,31 +50,62 @@ To see a list of all available options, use:
 python hydra.py -h
 ```
 
+### Brute Force Attack
+
+To perfom a brute force attack, specify the username and server, along with optional parameters for character set and password length:
+
+```bash
+python hydra.py \
+  -c <character set as string> \
+  -s <IP address or DNS name> \
+  -u <username> \
+  --min <min length> \
+  --max <max length>
+```
+
+### Dictionary Attack
+
+To perform a dictionary attack, provide the username, server, and a path to a wordlist file:
+
+```bash
+python hydra.py \
+  -s <IP address or DNS name> \
+  -u <username> \
+  -w  <Path to wordlist> 
+```
+
 ## Code Breakdown
 
 ### Functions
 
-- `brute_force_ssh(username, server, charset, min_length, max_length)`:
-  - Attempts to log in to the SSH server using every combination of passwords formed from the specified character set and lengths.
+#### `brute_force_ssh(username, server, charset, min_length, max_length)`
+
+- Attempts to log in to the SSH server using every combination of passwords formed from the specified character set and lengths.
+- Parameters:
+  | Parameter   | description                                                 |
+  | ----------- | ----------------------------------------------------------- |
+  | `username`  | SSH username                                                |
+  | `server`    | SSH server IP or DNS                                        |
+  | `min_length`| Minimum length of generated passwords.                      |
+  | `max_length`| Maximum length of generated passwords.                      |
+  | `charset`   | Charset for brute force attack (default: lowercase letters) |
+  - Returns the found password or `None` if unsuccessful.
+
+#### `dictionary_attack(username, server, wordlist)`
+
+- Attempts to log in to the SSH server using passwords from a wordlist.
   - Parameters:
-    - `username`: SSH username.
-    - `server`: SSH server IP or DNS.
-    - `charset`: Characters to use for generating passwords.
-    - `min_length`: Minimum length of generated passwords.
-    - `max_length`: Maximum length of generated passwords.
-    - Returns the found password or `None` if unsuccessful.
-- `dictionary_attack(username, server, wordlist)`:
-  - Attempts to log in to the SSH server using passwords from a wordlist.
-    - Parameters:
-      - `username`: SSH username.
-      - `server`: SSH server IP or DNS.
-      - `wordlist`: Path to the wordlist file.
-    - Returns the found password or `None` if unsuccessful.
-- `main()`:
-  - Parses command-line arguments and invokes either the brute force or dictionary attack function based on the presence of the wordlist argument.
+    | Parameter   | description             |
+    | ----------- | ----------------------- |
+    | `username`  | SSH username            |
+    | `server`    | SSH server IP or DNS    |
+    | `wordlist`| Path to the wordlist file.|
+  - Returns the found password or `None` if unsuccessful.
+
+#### `main()`
+
+- Parses command-line arguments and invokes either the brute force or dictionary attack function based on the presence of the wordlist argument.
 
 ### Notes
 
 - The `paramiko` library is used for handling SSH connections.
-- The tool is designed to stop as soon as a valid password is found.
-- The script uses `argparse` for command-line argument parsing.
