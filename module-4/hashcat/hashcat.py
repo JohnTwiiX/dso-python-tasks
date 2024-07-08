@@ -12,7 +12,7 @@ hash_modes = {
     '3': 'sha512'
 }
 
-def hash_function(mode):
+def translate_mode_to_hash_algorithm(mode):
     if mode == '0':
         return hashlib.md5
     elif mode == '1':
@@ -44,7 +44,6 @@ def brute_force_attack(target_hash, hash_func):
     print("Password not found.")
     end_time = time.time()
     print(f"Time elapsed: {end_time - start_time} seconds")
-    return None
 
 def dictionary_attack(target_hash, hash_func, wordlist_path):
     start_time = time.time()
@@ -65,7 +64,9 @@ def dictionary_attack(target_hash, hash_func, wordlist_path):
     return None
 
 def main():
-    parser = argparse.ArgumentParser(description="Hashcat-like tool in Python", add_help=False, epilog="Example usage: python script.py -m 0 -a 0 -h 5d41402abc4b2a76b9719d911017c592")
+    parser = argparse.ArgumentParser(description="Hashcat-like tool in Python", 
+                                     add_help=False, 
+                                     epilog="Example usage: python script.py -m 0 -a 0 -h 5d41402abc4b2a76b9719d911017c592")
 
     parser.add_argument('-m', '--mode', required=True, choices=['0', '1', '2', '3'],
                         help="Hash mode: 0 (MD5), 1 (SHA-1), 2 (SHA-256), 3 (SHA-512)")
@@ -92,7 +93,7 @@ def main():
             target_hash = f.read().strip()
 
     # choose the target hash
-    hash_func = hash_function(args.mode)
+    hash_func = translate_mode_to_hash_algorithm(args.mode)
 
     # execute the attack
     if args.attack == '0':

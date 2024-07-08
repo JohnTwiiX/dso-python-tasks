@@ -1,16 +1,19 @@
 # My `hashcat` tool
 
-This folder contains the source code for my own implementation of the `hashcat` tool.
-Hashcat can be used to TBD.
+This tool provides a Python-based solution for cracking password hashes using either brute-force or dictionary attacks, similar to the functionality provided by Hashcat.
+The tool is designed to stop as soon as a valid password is found and reports the elapsed time.
+The script can read the target hash from a file if specified with the `-H` argument.
 
 This is a lightweight implementation that covers the following features/options:
 
-- `-m` `--mode`, Hash mode: 0 (MD5), 1 (SHA-1), 2 (SHA-256), 3 (SHA-512)
-- `-a` `--attack`, Attack mode: 0 (Brute-Force), 1 (Dictionary)
-- `-h` `--hash`, Target hash (required if -H is not used)
-- `-H` `--hashfile`, File containing the target hash (required if -h is not used)
-- `-w` `--wordlist`,Path to the wordlist file (required for Dictionary attack)
-- `--help`, Show this help message and exit
+| Tag               | description                                                 | required |
+| ----------------- | ----------------------------------------------------------- | -------- |
+| `-m` `--mode`     | Hash mode: 0 (MD5), 1 (SHA-1), 2 (SHA-256), 3 (SHA-512)     | x        |
+| `-a` `--attack`   | Attack mode: 0 (Brute-Force), 1 (Dictionary)                | x        |
+| `-w` `--wordlist` | Wordlist for dictionary attack                              |          |
+| `-h` `--hash`     | Target hash (required if -H is not used)                    |          |
+| `-H` `--hashfile` | File containing the target hash (required if -h is not used)|          |
+| `--help`          | Show this help message and exit                             |          |
 
 ## Features
 
@@ -23,30 +26,14 @@ This is a lightweight implementation that covers the following features/options:
 
 ### Prerequisites
 
-- Python 3.6 or later
+- Python 3.12.3
 
 ### Installation
 
-1. Clone or download the script.
-2. Ensure you have Python installed.
+1. clone the repository.
+2. install dependencies.
 
 ## Usage examples
-
-### Brute Force Attack
-
-To perform a brute-force attack, specify the hash algorithm, attack mode, and target hash. The example below performs a brute-force attack on an MD5 hash:
-
-```bash
-python hashcat.py -m 0 -a 0 -h 5d41402abc4b2a76b9719d911017c592
-```
-
-### Dictionary Attack
-
-To perform a dictionary attack, provide the hash algorithm, attack mode, target hash, and path to a wordlist file:
-
-```bash
-python hashcat.py -m 1 -a 1 -h e99a18c428cb38d5f260853678922e03 -w wordlist.txt
-```
 
 ### Help
 
@@ -54,6 +41,29 @@ To see a list of all available options, use:
 
 ```bash
 python hashcat.py --help
+```
+
+### Brute Force Attack
+
+To perform a brute-force attack, specify the hash algorithm, attack mode, and target hash. The example below performs a brute-force attack on an MD5 hash:
+
+```bash
+python hashcat.py \
+  -m 0 \
+  -a 0 \ 
+  -h 5d41402abc4b2a76b9719d911017c592
+```
+
+### Dictionary Attack
+
+To perform a dictionary attack, provide the hash algorithm, attack mode, target hash, and path to a wordlist file:
+
+```bash
+python hashcat.py \
+  -m 1 \
+  -a 1 \
+  -h e99a18c428cb38d5f260853678922e03 \
+  -w wordlist.txt
 ```
 
 ## Code Breakdown
@@ -69,27 +79,32 @@ The script supports the following hash modes:
 
 ### Functions
 
-- `hash_function(mode)`:
-  - Returns the appropriate hash function from the `hashlib` library based on the specified mode.
-  - Raises a `ValueError` if an unsupported mode is specified.
-- `brute_force_attack(target_hash, hash_func)`:
-  - Performs a brute-force attack by generating all possible passwords from a specified character set and length range, hashing them, and comparing to the target hash.
+#### `hash_function(mode)`
+
+- Returns the appropriate hash function from the `hashlib` library based on the specified mode.
+- Raises a `ValueError` if an unsupported mode is specified.
+
+#### `brute_force_attack(target_hash, hash_func)`
+
+- Performs a brute-force attack by generating all possible passwords from a specified character set and length range, hashing them, and comparing to the target hash.
+- Parameters:
+  - `target_hash`: The target hash to crack.
+  - `hash_func`: The hash function to use.
+- Uses ASCII letters and digits with a password length range of 6 to 8 characters.
+
+#### `dictionary_attack(target_hash, hash_func, wordlist_path)`
+
+- Performs a dictionary attack by reading passwords from a wordlist file, hashing them, and comparing to the target hash.
   - Parameters:
     - `target_hash`: The target hash to crack.
     - `hash_func`: The hash function to use.
-  - Uses ASCII letters and digits with a password length range of 6 to 8 characters.
-- `dictionary_attack(target_hash, hash_func, wordlist_path)`:
-  - Performs a dictionary attack by reading passwords from a wordlist file, hashing them, and comparing to the target hash.
-    - Parameters:
-      - `target_hash`: The target hash to crack.
-      - `hash_func`: The hash function to use.
-      - `wordlist_path`: Path to the wordlist file.
-- `main()`:
-  - Parses command-line arguments and invokes the appropriate attack function.
-  - Validates required parameters and handles errors.
+    - `wordlist_path`: Path to the wordlist file.
+
+#### `main()`
+
+- Parses command-line arguments and invokes the appropriate attack function.
+- Validates required parameters and handles errors.
 
 ### Notes
 
-- The tool is designed to stop as soon as a valid password is found and reports the elapsed time.
 - The brute-force attack function prints each password attempt, which can be useful for debugging or understanding the attack process.
-- The script can read the target hash from a file if specified with the `-H` argument.
