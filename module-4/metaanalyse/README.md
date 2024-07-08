@@ -13,8 +13,8 @@ The **PDF Metadata Extractor** is a Python program designed to automate the extr
 
 ## Requirements
 
-- Python 3.x
-- PyPDF2
+- Python 3.12.3
+- PyPDF2 2.12
 - argparse
 - csv
 - os
@@ -45,8 +45,8 @@ python3 pdf_metadata_extractor.py -d /path/to/directory -n output.csv
 
 ## Arguments
 
-- `-f` or `--file`: Path to a single PDF file.
-- `-d` or `--directory`: Path to a directory containing multiple PDF files.
+- `-f` or `--file`: Path to a single PDF file (required if not use -d).
+- `-d` or `--directory`: Path to a directory containing multiple PDF files (required if not use -f).
 - `-n` or `--name`: Name and path of the output CSV file (required).
 
 ## Example
@@ -65,7 +65,7 @@ python3 pdf_metadata_extractor.py -d /path/to/directory -n metadata.csv
 
 ## Code Explanation
 
-`extract_pdf_metadata(file_path)`
+### `extract_pdf_metadata(file_path)`
 
 This function extracts metadata from a given PDF file and returns a dictionary with the metadata. If a metadata field is missing, it sets the value to `undefined`.
 
@@ -74,15 +74,15 @@ This function extracts metadata from a given PDF file and returns a dictionary w
 - Returns:
   - `metadata` (dict): Dictionary containing the extracted metadata.
 
-`process_single_file(file_path, csv_path)
-`
+### `process_single_file(file_path, csv_path)`
+
 This function processes a single PDF file, extracts its metadata, and writes it to a CSV file.
 
 - `Parameters`:
   - `file_path` (str): Path to the PDF file.
   - `csv_path` (str): Path to the output CSV file.
 
-`process_directory(directory_path, csv_path)`
+### `process_directory(directory_path, csv_path)`
 
 This function processes multiple PDF files in a given directory, extracts their metadata, and writes it to a CSV file.
 

@@ -21,17 +21,17 @@ def extract_pdf_metadata(file_path):
         reader = PdfReader(file_path)
         info = reader.metadata
 
-        metadata['Title'] = info.get('/Title', 'undefined') or 'undefined'
-        metadata['Author'] = info.get('/Author', 'undefined') or 'undefined'
-        metadata['Creator'] = info.get('/Creator', 'undefined') or 'undefined'
-        metadata['Created'] = info.get('/CreationDate', 'undefined') or 'undefined'
-        metadata['Modified'] = info.get('/ModDate', 'undefined') or 'undefined'
-        metadata['Subject'] = info.get('/Subject', 'undefined') or 'undefined'
-        metadata['Keywords'] = info.get('/Keywords', 'undefined') or 'undefined'
-        metadata['Description'] = info.get('/Description', 'undefined') or 'undefined'
-        metadata['Producer'] = info.get('/Producer', 'undefined') or 'undefined'
+        metadata['Title'] = info.get('/Title', 'undefined')
+        metadata['Author'] = info.get('/Author', 'undefined')
+        metadata['Creator'] = info.get('/Creator', 'undefined')
+        metadata['Created'] = info.get('/CreationDate', 'undefined')
+        metadata['Modified'] = info.get('/ModDate', 'undefined')
+        metadata['Subject'] = info.get('/Subject', 'undefined')
+        metadata['Keywords'] = info.get('/Keywords', 'undefined')
+        metadata['Description'] = info.get('/Description', 'undefined')
+        metadata['Producer'] = info.get('/Producer', 'undefined')
         
-        metadata['PDF Version'] = reader.trailer.get('/Version', 'undefined') or 'undefined'
+        metadata['PDF Version'] = reader.trailer.get('/Version', 'undefined')
     except Exception as e:
         print(f'Error extracting metadata from {file_path}: {e}')
     return metadata
@@ -70,12 +70,13 @@ def main():
 
     args = parser.parse_args()
 
+    if not args.file or not args.directory:
+        raise Exception("You need to specify either -f or -d option")
     if args.file:
         process_single_file(args.file, args.name)
     elif args.directory:
         process_directory(args.directory, args.name)
-    else:
-        print('Please specify either a file (-f) or a directory (-d).')
+    
 
 if __name__ == "__main__":
     main()
