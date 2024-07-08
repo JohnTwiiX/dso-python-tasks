@@ -1,11 +1,11 @@
 # Python Port Scanner
 
 This Python script functions as a basic port scanner, similar to `nmap`, for scanning specified ports on a given host and determining if they are open or closed. For the first 100 ports, it also identifies the common services running on those ports.
+This `README.md` provides a clear guide for anyone looking to understand and use your port scanner script.
 
 ## Features
 
 - Supports scanning both IP addresses and DNS hostnames.
-- Allows scanning of a specific range of ports or all ports.
 - Identifies open ports and, for common ports, reports the associated service.
 - Utilizes concurrent scanning to improve performance.
 
@@ -16,7 +16,6 @@ This Python script functions as a basic port scanner, similar to `nmap`, for sca
 - [Examples](#examples)
 - [Options](#options)
 - [Common Ports](#common-ports)
-- [License](#license)
 
 ## Installation
 
@@ -26,7 +25,11 @@ This Python script functions as a basic port scanner, similar to `nmap`, for sca
     python3 --version
     ```
 
-2. Download or clone this repository to your local machine.
+2. clone this repository.
+
+    ```sh
+    git clone git@github.com:JohnTwiiX/dso-python-tasks.git
+    ```
 
 3. Navigate to the directory containing the script.
 
@@ -90,16 +93,9 @@ The script identifies the following common services for ports up to 100:
 
 Services for other ports up to 100 can be added as needed.
 
-## License
-
-This script is open-source and available under the MIT License. Feel free to use, modify, and distribute it as needed.
-
 ### Key Sections Explained
 
-- **Installation**: Instructions on how to get the script up and running on a local machine.
-- **Usage**: Examples of how to use the script, including command-line syntax and example commands.
-- **Options**: Details on the command-line arguments accepted by the script.
-- **Common Ports**: Information about the services the script can identify for the first 100 ports.
-- **License**: Encourages users to freely use and modify the script under the MIT License.
-
-This `README.md` provides a clear guide for anyone looking to understand and use your port scanner script.
+- **Installation:** Instructions on how to get the script up and running on a local machine.
+- **Usage:** Examples of how to use the script, including command-line syntax and example commands.
+- **Options:** Details on the command-line arguments accepted by the script.
+- **Common Ports:** Information about the services the script can identify for the first 100 ports.
