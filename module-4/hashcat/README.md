@@ -81,29 +81,32 @@ The script supports the following hash modes:
 
 #### `hash_function(mode)`
 
-- Returns the appropriate hash function from the `hashlib` library based on the specified mode.
-- Raises a `ValueError` if an unsupported mode is specified.
+Returns the appropriate hash function from the `hashlib` library based on the specified mode.
+Raises a `ValueError` if an unsupported mode is specified.
 
 #### `brute_force_attack(target_hash, hash_func)`
 
-- Performs a brute-force attack by generating all possible passwords from a specified character set and length range, hashing them, and comparing to the target hash.
-- Parameters:
-  - `target_hash`: The target hash to crack.
-  - `hash_func`: The hash function to use.
-- Uses ASCII letters and digits with a password length range of 6 to 8 characters.
+Performs a brute-force attack by generating all possible passwords from a specified character set and length range, hashing them, and comparing to the target hash.
+
+Parameters:
+    - `target_hash`: The target hash to crack.
+    - `hash_func`: The hash function to use.
+
+Uses ASCII letters and digits with a password length range of 6 to 8 characters.
 
 #### `dictionary_attack(target_hash, hash_func, wordlist_path)`
 
-- Performs a dictionary attack by reading passwords from a wordlist file, hashing them, and comparing to the target hash.
-  - Parameters:
+Performs a dictionary attack by reading passwords from a wordlist file, hashing them, and comparing to the target hash.
+
+Parameters:
     - `target_hash`: The target hash to crack.
     - `hash_func`: The hash function to use.
     - `wordlist_path`: Path to the wordlist file.
 
 #### `main()`
 
-- Parses command-line arguments and invokes the appropriate attack function.
-- Validates required parameters and handles errors.
+Parses command-line arguments and invokes the appropriate attack function.
+Validates required parameters and handles errors.
 
 ### Notes
 

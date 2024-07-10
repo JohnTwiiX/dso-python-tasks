@@ -2,9 +2,8 @@ import argparse
 import hashlib
 import itertools
 import string
-import time
 
-# Unterstützte Hash-Algorithmen
+# Supported hash algorithms
 hash_modes = {
     '0': 'md5',
     '1': 'sha1',
@@ -24,13 +23,20 @@ def translate_mode_to_hash_algorithm(mode):
     else:
         raise ValueError("Unsupported hash mode")
 
-def brute_force_attack(target_hash, hash_func):
+def brute_force_attack(target_hash:str, hash_func:function):
+    """create hashed passwords for crack target password
+
+    Args:
+        target_hash (string): the hashed target password
+        hash_func (func): dynamic hash function
+
+    Returns:
+        guess (string): the correct password
+    """
+    
     charset = string.ascii_letters + string.digits
     min_length = 6
     max_length = 8
-
-    start_time = time.time()
-
     for length in range(min_length, max_length + 1):
         for guess in itertools.product(charset, repeat=length):
             guess = ''.join(guess)
@@ -38,15 +44,20 @@ def brute_force_attack(target_hash, hash_func):
             print(guess)
             if guess_hash == target_hash:
                 print(f"Password found: {guess}")
-                end_time = time.time()
-                print(f"Time elapsed: {end_time - start_time} seconds")
                 return guess
     print("Password not found.")
-    end_time = time.time()
-    print(f"Time elapsed: {end_time - start_time} seconds")
 
-def dictionary_attack(target_hash, hash_func, wordlist_path):
-    start_time = time.time()
+def dictionary_attack(target_hash:str, hash_func:function, wordlist_path:str):
+    """hash password of password list for crack target password
+
+    Args:
+        target_hash (string): the hashed target password
+        hash_func (func): dynamic hash function
+        wordlist_path (string): the path to the file with the word list
+
+    Returns:
+        guess (string): the correct password
+    """
 
     with open(wordlist_path, 'r', encoding='utf-8', errors='ignore') as wordlist:
         for word in wordlist:
@@ -55,27 +66,42 @@ def dictionary_attack(target_hash, hash_func, wordlist_path):
             word_hash = hash_func(word.encode('utf-8')).hexdigest()
             if word_hash == target_hash:
                 print(f"Password found: {word}")
-                end_time = time.time()
-                print(f"Time elapsed: {end_time - start_time} seconds")
                 return word
     print("Password not found.")
-    end_time = time.time()
-    print(f"Time elapsed: {end_time - start_time} seconds")
-    return None
 
 def main():
-    parser = argparse.ArgumentParser(description="Hashcat-like tool in Python", 
-                                     add_help=False, 
-                                     epilog="Example usage: python script.py -m 0 -a 0 -h 5d41402abc4b2a76b9719d911017c592")
+    parser = argparse.ArgumentParser(
+        description="Hashcat-like tool in Python", 
+        add_help=False, 
+        epilog="Example usage: python script.py -m 0 -a 0 -h 5d41402abc4b2a76b9719d911017c592")
 
-    parser.add_argument('-m', '--mode', required=True, choices=['0', '1', '2', '3'],
-                        help="Hash mode: 0 (MD5), 1 (SHA-1), 2 (SHA-256), 3 (SHA-512)")
-    parser.add_argument('-a', '--attack', required=True, choices=['0', '1'],
-                        help="Attack mode: 0 (Brute-Force), 1 (Dictionary)")
-    parser.add_argument('-h', '--hash', help="Target hash (required if -H is not used)")
-    parser.add_argument('-H', '--hashfile', help="File containing the target hash (required if -h is not used)")
-    parser.add_argument('-w', '--wordlist', help="Path to the wordlist file (required for Dictionary attack)")
-    parser.add_argument('--help', action='help', help='Show this help message and exit')
+    parser.add_argument(
+        '-m', '--mode', 
+        required=True, choices=['0', '1', '2', '3'],
+        help="Hash mode: 0 (MD5), 1 (SHA-1), 2 (SHA-256), 3 (SHA-512)")
+    
+    parser.add_argument(
+        '-a', '--attack', 
+        required=True, 
+        choices=['0', '1'],
+        help="Attack mode: 0 (Brute-Force), 1 (Dictionary)")
+    
+    parser.add_argument(
+        '-h', '--hash', 
+        help="Target hash (required if -H is not used)")
+    
+    parser.add_argument(
+        '-H', '--hashfile', 
+        help="File containing the target hash (required if -h is not used)")
+    
+    parser.add_argument(
+        '-w', '--wordlist', 
+        help="Path to the wordlist file (required for Dictionary attack)")
+    
+    parser.add_argument(
+        '--help', 
+        action='help', 
+        help='Show this help message and exit')
 
     args = parser.parse_args()
 
