@@ -8,7 +8,8 @@ import argparse
 
 def extract_pdf_links_from_website(url):
     response = requests.get(url)
-    response.raise_for_status() #HTTP Error
+    # this call handles HTTP errors that arise when an unsuccessful HTTP response code is returned from the previous call, e.g. 400, 401, 500, etc.
+    response.raise_for_status()
     soup = BeautifulSoup(response.text, 'html.parser')
     pdf_links = [urljoin(url, link.get('href')) for link in soup.find_all('a', href=True) if link.get('href').endswith('.pdf')]
     return pdf_links

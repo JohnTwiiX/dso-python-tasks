@@ -2,6 +2,11 @@
 
 This Python script downloads PDF files from a specified website and extracts metadata such as title, author, creation date, etc., saving them into a CSV file.
 
+- **Web Scraping**: Extracts all PDF links from a given website using `BeautifulSoup` and `requests` modules.
+- **PDF Download**: Downloads each PDF file found to a local directory (`pdfs/`).
+- **Metadata Extraction**: Uses the `PyPDF2` library to extract metadata (title, author, creation date, etc.) from each downloaded PDF file.
+- **CSV Export**: Saves extracted metadata into a CSV file with semicolon (`;`) as a delimiter for better readability.
+
 ## Function Descriptions
 
 Ensure the website allows scraping of PDF links and complies with legal and ethical guidelines.
@@ -50,9 +55,10 @@ This is the main function that orchestrates the entire process. It parses comman
 
 1. **Setup Environment**:
     - Ensure Python 3.12.3 and necessary libraries (`requests 2.31`, `beautifulsoup4 4.12`, `PyPDF2 2.12`) are installed.
+    - see [requirements.txt](./requirements.txt)
 
     ```python
-    pip install requests==2.31 beautifulsoup4==4.12 PyPDF2==2.12
+    pip install -r requirements.txt
     ```
 
 2. **Run the Script**:
