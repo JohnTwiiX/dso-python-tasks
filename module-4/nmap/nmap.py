@@ -20,7 +20,15 @@ COMMON_PORTS = {
     # ... continue up to port 1000 as needed
 }
 
-def resolve_host_ip_from_name(host):
+def resolve_host_ip_from_name(host: str):
+    """resolve host ip
+
+    Args:
+        host (str): ip address or dns hostname
+
+    Returns:
+        ip (str): target ip address
+    """
     try:
         ip = socket.gethostbyname(host)
         print(f"[INFO] IP address for {host} is {ip}")
@@ -29,7 +37,19 @@ def resolve_host_ip_from_name(host):
         print(f"[ERROR] Could not resolve host {host}.")
         return None
 
-def scan_port(ip, port):
+def scan_port(ip: str, port: str):
+    """scan open ports of ip address
+
+    Args:
+        ip (str): target ip address
+        port (str): target port
+
+    Returns:
+        True (boolean): is port open
+        False (boolean): is port closed
+        Port (str): target port
+        service_name (str): service name of port 
+    """
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as socket_connection:
         socket_connection.settimeout(1)
         result = socket_connection.connect_ex((ip, port))
@@ -42,6 +62,15 @@ def scan_port(ip, port):
             return port, False, "Unknown"
 
 def scan_port_range(target_ip: str, port_range: List[str]):
+    """range of port scan
+
+    Args:
+        target_ip (str): target ip address
+        port_range (List[str]): range of ports
+
+    Returns:
+        open_ports: List of open ports
+    """
     open_ports = []
     with concurrent.futures.ThreadPoolExecutor(max_workers=100) as executor:
         test_port = {executor.submit(scan_port, target_ip, port): port for port in port_range}
@@ -51,7 +80,19 @@ def scan_port_range(target_ip: str, port_range: List[str]):
                 open_ports.append((port, service_name))
     return open_ports
 
-def parse_port_range(port_range_str):
+def parse_port_range(port_range_str: str):
+    """parse the port range
+
+    Args:
+        port_range_str (str): port range e.g. 10-100 or -
+
+    Raises:
+        ValueError: no set min_port or max_port
+        ValueError: illegal value for e.g. char instead of int
+
+    Returns:
+        range (func): range function from to
+    """
     min_port, max_port = port_range_str.split("-")
     try:
         if min_port == "" or max_port == "":
