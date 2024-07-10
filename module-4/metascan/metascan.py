@@ -6,7 +6,15 @@ from urllib.parse import urljoin, urlparse
 from PyPDF2 import PdfReader
 import argparse
 
-def extract_pdf_links_from_website(url):
+def extract_pdf_links_from_website(url: str):
+    """extract pdf links from website
+
+    Args:
+        url (str): url of website
+
+    Returns:
+        pdf_links (List[str]): List of pdf links
+    """
     response = requests.get(url)
     # this call handles HTTP errors that arise when an unsuccessful HTTP response code is returned from the previous call, e.g. 400, 401, 500, etc.
     response.raise_for_status()
@@ -14,14 +22,28 @@ def extract_pdf_links_from_website(url):
     pdf_links = [urljoin(url, link.get('href')) for link in soup.find_all('a', href=True) if link.get('href').endswith('.pdf')]
     return pdf_links
 
-def download_pdf(url, save_path):
+def download_pdf(url:str, save_path:str):
+    """download pdf files
+
+    Args:
+        url (str): url of pdf file
+        save_path (str): location to storage pdf
+    """
     response = requests.get(url)
     response.raise_for_status()
     with open(save_path, 'wb') as file:
         file.write(response.content)
     print(f'Downloaded: {save_path}')
 
-def extract_pdf_metadata(file_path):
+def extract_pdf_metadata(file_path:str):
+    """extract pdf metadata
+
+    Args:
+        file_path (str): path to pdf file
+
+    Returns:
+        metadata (obj): object with metadata of the pdf
+    """
     metadata = {
         'Title': '',
         'Author': '',
