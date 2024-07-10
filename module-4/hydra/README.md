@@ -5,14 +5,14 @@ Hydra can be used to TBD.
 
 This is a lightweight implementation that covers the following features/options:
 
-| Tag               | description                                                 | required |
-| ----------------- | ----------------------------------------------------------- | -------- |
-| `-u` `--username` | Username for SSH login                                      | x        |
-| `-s` `--server`   | Server IP or DNS for SSH login                              | x        |
-| `-w` `--wordlist` | Wordlist for dictionary attack                              |          |
-| `--min`           | Minimum length of passwords for brute force (default: 4)    |          |
-| `--max`           | Maximum length of passwords for brute force (default: 8)    |          |
-| `-c` `--charset`  | Charset for brute force attack (default: lowercase letters) |          |
+| Tag                    | description                                                 | required |
+| ---------------------- | ----------------------------------------------------------- | :------: |
+| `-u` <br> `--username` | Username for SSH login                                      | x        |
+| `-s` <br> `--server`   | Server IP or DNS for SSH login                              | x        |
+| `-w` <br> `--wordlist` | Wordlist for dictionary attack                              |          |
+| `--min`                | Minimum length of passwords for brute force (default: 4)    |          |
+| `--max`                | Maximum length of passwords for brute force (default: 8)    |          |
+| `-c` <br> `--charset`  | Charset for brute force attack (default: lowercase letters) |          |
 
 ## Features
 
@@ -26,7 +26,7 @@ This is a lightweight implementation that covers the following features/options:
 ### Prerequisites
 
 - Python 3.12.3
-- `paramiko` 2.12
+- `paramiko` 2.12 [more info](#notes)
 - `argparse`
 
 To install `paramiko`, you can use `pip`:
@@ -80,31 +80,33 @@ python hydra.py \
 
 #### `brute_force_ssh(username, server, charset, min_length, max_length)`
 
-- Attempts to log in to the SSH server using every combination of passwords formed from the specified character set and lengths.
-- Parameters:
-  | Parameter   | description                                                 |
-  | ----------- | ----------------------------------------------------------- |
-  | `username`  | SSH username                                                |
-  | `server`    | SSH server IP or DNS                                        |
-  | `min_length`| Minimum length of generated passwords.                      |
-  | `max_length`| Maximum length of generated passwords.                      |
-  | `charset`   | Charset for brute force attack (default: lowercase letters) |
-  - Returns the found password or `None` if unsuccessful.
+Attempts to log in to the SSH server using every combination of passwords formed from the specified character set and lengths.
+Parameters:
+| Parameter   | description                                                 |
+| ----------- | ----------------------------------------------------------- |
+| `username`  | SSH username                                                |
+| `server`    | SSH server IP or DNS                                        |
+| `min_length`| Minimum length of generated passwords.                      |
+| `max_length`| Maximum length of generated passwords.                      |
+| `charset`   | Charset for brute force attack (default: lowercase letters) |
+
+Returns the found password or `None` if unsuccessful.
 
 #### `dictionary_attack(username, server, wordlist)`
 
-- Attempts to log in to the SSH server using passwords from a wordlist.
-  - Parameters:
-    | Parameter   | description             |
-    | ----------- | ----------------------- |
-    | `username`  | SSH username            |
-    | `server`    | SSH server IP or DNS    |
-    | `wordlist`| Path to the wordlist file.|
-  - Returns the found password or `None` if unsuccessful.
+Attempts to log in to the SSH server using passwords from a wordlist.
+Parameters:
+| Parameter   | description             |
+| ----------- | ----------------------- |
+| `username`  | SSH username            |
+| `server`    | SSH server IP or DNS    |
+| `wordlist`| Path to the wordlist file.|
+
+Returns the found password or `None` if unsuccessful.
 
 #### `main()`
 
-- Parses command-line arguments and invokes either the brute force or dictionary attack function based on the presence of the wordlist argument.
+Parses command-line arguments and invokes either the brute force or dictionary attack function based on the presence of the wordlist argument.
 
 ### Notes
 
