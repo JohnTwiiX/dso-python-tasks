@@ -70,7 +70,7 @@ def main():
 
     args = parser.parse_args()
 
-    if not args.file or not args.directory:
+    if not args.file and not args.directory:
         raise Exception("You need to specify either -f or -d option")
     if args.file:
         process_single_file(args.file, args.name)
