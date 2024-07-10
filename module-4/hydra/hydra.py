@@ -7,7 +7,7 @@ import time
 client = SSHClient()
 client.set_missing_host_key_policy(AutoAddPolicy())
 
-def brute_force_ssh(username, server, charset, min_length, max_length):
+def brute_force_ssh(username:str, server:str, charset:str, min_length:int, max_length:int):
     """
     Attempts to brute-force an SSH password by generating all possible
     combinations of the given character set within a specified length range.
@@ -51,7 +51,7 @@ def brute_force_ssh(username, server, charset, min_length, max_length):
     print("Password not found.")
     return None
 
-def dictionary_attack(username, server, wordlist):
+def dictionary_attack(username:str, server:str, wordlist:str):
     """
     Attempts to authenticate to an SSH server using passwords from a provided wordlist file.
 
