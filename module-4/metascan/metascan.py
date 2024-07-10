@@ -15,9 +15,7 @@ def extract_pdf_links_from_website(url: str):
     Returns:
         pdf_links (List[str]): List of pdf links
     """
-    response = requests.get(url)
-    # this call handles HTTP errors that arise when an unsuccessful HTTP response code is returned from the previous call, e.g. 400, 401, 500, etc.
-    response.raise_for_status()
+    response = response = get_response(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     pdf_links = [urljoin(url, link.get('href')) for link in soup.find_all('a', href=True) if link.get('href').endswith('.pdf')]
     return pdf_links
@@ -29,11 +27,14 @@ def download_pdf(url:str, save_path:str):
         url (str): url of pdf file
         save_path (str): location to storage pdf
     """
-    response = requests.get(url)
-    response.raise_for_status()
+    response = get_response(url)
     with open(save_path, 'wb') as file:
         file.write(response.content)
     print(f'Downloaded: {save_path}')
+    
+def get_response(url:str):
+    # this call handles HTTP errors that arise when an unsuccessful HTTP response code is returned from the previous call, e.g. 400, 401, 500, etc.
+    return requests.get(url).raise_for_status()
 
 def extract_pdf_metadata(file_path:str):
     """extract pdf metadata
