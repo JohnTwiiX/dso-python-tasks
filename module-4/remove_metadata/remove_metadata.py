@@ -2,13 +2,13 @@ import os
 import subprocess
 import argparse
 
-def remove_metadata_exiftool(input_file, output_file):
-    """
-    Parameter
-    - input_file = PDF with metadata
-    - output_file = PDF without metadata
-    
-    Removes metadata using ExifTool.
+
+def remove_metadata_exiftool(input_file:str, output_file:str):
+    """Removes metadata using Exiftool
+
+    Args:
+        input_file (string): path to the input file
+        output_file (string): path to the output file
     """
     try:
         command = f'exiftool -all= -o {output_file} {input_file}'
@@ -17,13 +17,12 @@ def remove_metadata_exiftool(input_file, output_file):
     except subprocess.CalledProcessError as e:
         print(f"Error removing metadata with ExifTool: {e}")
 
-def remove_metadata_qpdf(input_file, output_file):
-    """
-    Parameter
-    - input_file = PDF with metadata
-    - output_file = PDF without metadata
-    
-    Removes metadata using QPDF.
+def remove_metadata_qpdf(input_file:str, output_file:str):
+    """Removes metadata using QPDF
+
+    Args:
+        input_file (string): path to the input file
+        output_file (string): path to the output file
     """
     try:
         command = f'qpdf --linearize --object-streams=disable {input_file} {output_file}'

@@ -72,5 +72,5 @@ This function removes metadata from a PDF file using QPDF.
 
 - **How it Works**:
   - Constructs a command to run QPDF with options to remove metadata and save the result to the specified output file.
-  - Executes the command using `subprocess.run`.
+  - Execute the command with `subprocess.run` to get the output and continue working with it .
   - Handles errors if the command fails.
