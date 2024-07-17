@@ -21,7 +21,7 @@ COMMON_PORTS = {
 }
 
 def resolve_host_ip_from_name(host: str):
-    """resolve host ip
+    """resolve ip address from given hostname
 
     Args:
         host (str): ip address or dns hostname
@@ -87,7 +87,7 @@ def parse_port_range(port_range_str: str):
         port_range_str (str): port range e.g. 10-100 or -
 
     Raises:
-        ValueError: no set min_port or max_port
+        ValueError: no min or max value set
         ValueError: illegal value for e.g. char instead of int
 
     Returns:
